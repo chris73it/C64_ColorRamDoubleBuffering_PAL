@@ -56,6 +56,9 @@ irq1:
 
   // This code is the Kick Assembler "translation" of the code at:
   // http://codebase64.org/doku.php?id=base:repeating_char-lines&s[]=hcl
+lda #12 // Letter 'L'
+sta 1024+40*23 // Leftmost character on 24th row
+//jmp exiting_irq1
 
   :stabilize_irq() //RasterLine 82, after cycle 3 (in short: RL82:3)
   :cycles(-3+ 54 -2*6 -2-4)
