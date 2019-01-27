@@ -58,6 +58,8 @@ irq1:
   // http://codebase64.org/doku.php?id=base:repeating_char-lines&s[]=hcl
 lda #12 // Letter 'L'
 sta 1024+40*23 // Leftmost character on 24th row
+lda #WHITE
+sta $d801+3*40 // Make the '6' in "64K RAM SYSTEM..." white.
 //jmp exiting_irq1
 
   :stabilize_irq() //RasterLine 82, after cycle 3 (in short: RL82:3)
