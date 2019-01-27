@@ -13,7 +13,7 @@
 // Note: the '-2' is required because stabilize_irq() takes 2 raster
 // lines to synchronize to the raster (more precisely, it _always_ends
 // at the 3rd cycle of raster line 81.)
-.const RASTER_LINE = 81-2
+.const RASTER_LINE = 82-2
 
 :BasicUpstart2(main)
 main:
@@ -57,13 +57,13 @@ irq1:
   // This code is the Kick Assembler "translation" of the code at:
   // http://codebase64.org/doku.php?id=base:repeating_char-lines&s[]=hcl
 lda #12 // Letter 'L'
-sta 1024+40*23 // Leftmost character on 24th row
+sta 1024+23*40 // Leftmost character on 24th row
 lda #WHITE
 sta $d801+3*40 // Make the '6' in "64K RAM SYSTEM..." white.
 //jmp exiting_irq1
 
   :stabilize_irq() //RasterLine 82, after cycle 3 (in short: RL82:3)
-  :cycles(-3+ 54 -2*6 -2-4)
+  :cycles(-3+ 57 -2*6 -2-4)
 
   inc background // (6) Display on screen, so
   dec background // (6) we know where we are.
