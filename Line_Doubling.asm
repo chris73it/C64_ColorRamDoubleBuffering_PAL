@@ -64,14 +64,12 @@ sta $d801+3*40 // Make the '6' in "64K RAM SYSTEM..." white.
 
   :stabilize_irq() //RasterLine 82, after cycle 3 (in short: RL82:3)
   :cycles(-3+ 57 -2*6 -2-4)
-
   inc background // (6) Display on screen, so
   dec background // (6) we know where we are.
-
   lda #$1a  // (2) Do repeat char-line..
-  sta $d011 // (4) RL82:63
+  sta $d011 // (4) RL82:57
 
-  jsr wait_2_rows_with_20_cycles_bad_lines // RL84:63
+  jsr wait_2_rows_with_20_cycles_bad_lines // RL84:57
 
   lda #$1b // ..before setting $d011 back to original value.
   sta $d011
