@@ -72,7 +72,7 @@ sta $d801+3*40 // Make the '6' in "64K RAM SYSTEM..." white.
   jsr wait_1_row_with_20_cycles_bad_line
 
   // Uncomment this line to see TroubledFLDScreenshot.png
-  //jsr wait_one_good_line
+  //:cycles(63)
 
   lda #$1b // ..before setting $d011 back to original value.
   sta $d011
