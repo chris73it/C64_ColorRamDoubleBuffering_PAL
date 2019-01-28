@@ -1,6 +1,6 @@
 al C:d019 .vic2_interrupt_status_register
 al C:dc0d .cia1_interrupt_control_register
-al C:8f8 .exiting_irq1
+al C:aab .exiting_irq1
 al C:d011 .vic2_screen_control_register1
 al C:d016 .vic2_screen_control_register2
 al C:203c .wait_6_good_lines
