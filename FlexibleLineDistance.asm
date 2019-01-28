@@ -57,64 +57,81 @@ irq1:
   // This code is the Kick Assembler "translation" of the code at:
   // http://codebase64.org/doku.php?id=base:repeating_char-lines&s[]=hcl
 lda #12 // Letter 'L'
-sta 1024+23*40 // Leftmost character on 24th row
+sta 1024+4*40 // Leftmost character on 5th row
 lda #WHITE
 sta $d801+3*40 // Make the '6' in "64K RAM SYSTEM..." white.
-//jmp exiting_irq1
+//jmp exiting_irq1 // Uncomment this jump to skip FLD effect.
 
   :stabilize_irq() //RasterLine 82, after cycle 3 (in short: RL82:3)
-  :cycles(-3+ 58 -2*6 -2-4)
-
+  :cycles(-3+ 58-2*6 -2-4)
   inc background // (6) Display on screen, so
   dec background // (6) we know where we are.
-
-  lda #$1a  // (2) Do repeat char-line..
+  lda #$1a  // (2) FLD
   sta $d011 // (4) RL82:63
 
-  jsr wait_one_good_line // RL83:63
+  :cycles(63+63 -6)
+  lda #$1b  // (2) FLD
+  sta $d011 // (4) RL84:63
 
-  lda #$1b  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$1c  // (2) FLD
+  sta $d011 // (4) RL85:63
 
-  jsr wait_one_good_line
+  :cycles(63 -6)
+  lda #$1d  // (2) FLD
+  sta $d011 // (4) RL86:63
 
-  lda #$1c  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$1e  // (2) FLD
+  sta $d011 // (4) RL87:63
 
-  jsr wait_one_good_line
+  :cycles(63 -6)
+  lda #$1f  // (2) FLD
+  sta $d011 // (4) RL88:63
 
-  lda #$1d  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$18  // (2) FLD
+  sta $d011 // (4) RL89:63
 
-  jsr wait_one_good_line
+  :cycles(63 -6)
+  lda #$19  // (2) FLD
+  sta $d011 // (4) RL90:63
 
-  lda #$1e  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL91:63
 
-  jsr wait_one_good_line
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL92:63
 
-  lda #$1f  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL93:63
 
-  jsr wait_one_good_line
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL94:63
 
-  lda #$18  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL95:63
 
-  jsr wait_one_good_line
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL96:63
 
-  lda #$19  // (2) Do repeat char-line..
-  sta $d011 // (4)
+  :cycles(63 -6)
+  lda #$1a  // (2) FLD
+  sta $d011 // (4) RL97:63
+// Up to this point the C64 will look like in
+// the RegularFLDScreenshot.png
 
-  jsr wait_one_good_line
-
-  lda #$1a  // (2) Do repeat char-line..
-  sta $d011 // (4)
-
-  jsr wait_one_good_line
-
-  lda #$1b  // (2) Do repeat char-line..
-  sta $d011 // (4)
+// Uncommenting the snippet below causes
+// the issues seen in TroubledFLDScreenshot.png
+//  :cycles(63 -6)
+//  lda #$1a  // (2) FLD
+//  sta $d011 // (4) RL98:63
 
   jsr wait_1_row_with_20_cycles_bad_line
 
