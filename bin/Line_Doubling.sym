@@ -1,6 +1,6 @@
 .label vic2_interrupt_status_register=$d019
 .label cia1_interrupt_control_register=$dc0d
-.label exiting_irq1=$8f8
+.label exiting_irq1=$8b0
 .label vic2_screen_control_register1=$d011
 .label vic2_screen_control_register2=$d016
 .label wait_6_good_lines=$203c
