@@ -7,17 +7,20 @@
 .label cia1_interrupt_control_register = $dc0d
 .label cia2_interrupt_control_register = $dd0d
 
-// Raster line 82 is the 8th line of the character row displaying
-// "64K RAM SYSTEM  38911 BASIC BYTES FREE"
-// that is shown when the Commodore 64 is turn on.
 // Note: the '-2' is required because stabilize_irq() takes 2 raster
-// lines to synchronize to the raster (more precisely, it _always_ends
-// at the 3rd cycle of raster line 81.)
-.const RASTER_LINE = 82-2
+// lines to synchronize the raster. More precisely, it _always_ ends
+// after completing the 3rd cycle of raster line number RASTER_LINE.
+.const RASTER_LINE = 49-2
 
 :BasicUpstart2(main)
 main:
   sei
+    lda #BLACK
+    sta border
+
+    lda #50  // Initial raster line to start FLD-ing
+    sta $FE
+
     lda $01
     and #%11111101
     sta $01
@@ -38,44 +41,40 @@ main:
 loop:
   jmp loop
 
+// In order to avoid seeing the screen flashing, or be a bit jumpy
+// and sometimes jerking forward in irs movements, the first part
+// of this code has been written counting cycles.
+// Notice I am still a beginner, so if some stuff does not look like
+// it makes too much sense to you, probably it does not.
+
 irq1:
-  // From http://www.zimmers.net/cbmpics/cbm/c64/vic-ii.txt
-  // by Christian Bauer
-  //
-  // 3.14.5. Doubled text lines
-  // --------------------------
-  // The display of a text line is normally finished after 8 raster
-  // lines, because then RC=7 and in cycle 58 of the last line the
-  // sequencer goes to idle state (see section 3.7.2.). But if you now
-  // assert a Bad Line Condition between cycles 54-57 of the last line,
-  // the sequencer stays in display state and the RC is incremented
-  // again (and thus overflows to zero). The VIC will then in the next
-  // line start again with the display of the previous text line. But
-  // as no new video matrix data has been read, the previous text line
-  // is simply displayed twice.
+  // Reset $D011 to use the default $1B value with YSCROLL = 3
+  lda #$1B
+  sta $D011
+  :stabilize_irq() //RasterLine 49, after cycle 3, in short RL:49:3
+  :cycles(-3 +18)  //RL:49:18
 
-  // This code is the Kick Assembler "translation" of the code at:
-  // http://codebase64.org/doku.php?id=base:repeating_char-lines&s[]=hcl
-lda #12 // Letter 'L'
-sta 1024+4*40 // Leftmost character on 5th row
-lda #WHITE
-sta $d801+3*40 // Make the '6' in "64K RAM SYSTEM..." white.
-//jmp exiting_irq1 // Uncomment this jump to skip FLD effect.
+loopy:
+  :cycles(-18 +59)  //RL:49:59
+  ldx $D012 //(4) Get current line, and..RL:49:63
+  dex       //(2)..decrement it, so not to trigger a Bad Line condition
+  txa       //(2)
+  and #$07  //(2) Use lower 3 bits
+  ora #$10  //(2) Screen on + Use textmode
+  sta $D011 //(4) Avoid Bad Line condition (RL:48 -> YSCROLL=0) RL:50:12
 
-  :stabilize_irq() //RasterLine 82, after cycle 3 (in short: RL82:3)
-  :cycles(-3+ 58 -2*6 -2-4)
-  inc background // (6) Display on screen, so
-  dec background // (6) we know where we are.
-  lda #$1a  // (2) Trigger FLD...
-  sta $d011 // (4) RL82:58
+  cpx $FE   //(3) Keep FLD'ing until raster line $FE..RL:50:15
+  bne loopy//(2+)..has been reached RL:50:17+
 
-  jsr wait_1_row_with_20_cycles_bad_line
+  // Below this line it is not importnat to be cycle exact
+  // (cycles are provided only for reference)
 
-  // Uncomment this line to see TroubledFLDScreenshot.png
-  //:cycles(63)
-
-  lda #$1b // ..before setting $d011 back to original value.
-  sta $d011
+  inc $FE          //(5) (RL:51:22)
+  lda $D012        //(4) (RL:51:26)
+  cmp #241         //(2) Stop at this raster line (RL:51:28)
+  bne exiting_irq1//(2+) (RL:51:30+)
+  lda #50          //(2) (RL:51:32)
+  sta $FE          //(3) (RL:51:35)
 
 exiting_irq1:
   asl vic2_interrupt_status_register
