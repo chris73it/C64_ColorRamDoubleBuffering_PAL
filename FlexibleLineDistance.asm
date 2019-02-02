@@ -53,40 +53,40 @@ irq1:
   // Reset $D011 to use the default $1B value with YSCROLL = 3
   lda #$1B
   sta $D011
-  :stabilize_irq() //RasterLine 49, after cycle 3, in short RL:49:3
-  :cycles(-3 +18)  //RL:49:18
+  :stabilize_irq() //RasterLine 48, after cycle 3, in short RL:48:3
+  :cycles(-3 +18)  //RL:48:18
 
 loopy:
-  :cycles(-18 +59)  //RL:49:59
-  ldx $D012 //(4) Get current line, and..RL:49:63
+  :cycles(-18 +59)  //RL:48:59
+  ldx $D012 //(4) Get current line, and..RL:48:63
   dex       //(2)..decrement it, so not to trigger a Bad Line condition
   txa       //(2)
   and #$07  //(2) Use lower 3 bits
-  ora #$10  //(2) Screen on + Use textmode
-  sta $D011 //(4) Avoid Bad Line condition (RL:48 -> YSCROLL=0) RL:50:12
+  ora #$10  //(2) Screen on + Use text mode
+  sta $D011 //(4) Avoid Bad Line condition (RL:47 -> YSCROLL=7) RL:49:12
 
-  cpx $FE   //(3) Keep FLD'ing until raster line $FE..RL:50:15
-  bne loopy//(2+)..has been reached RL:50:17+
+  cpx $FE   //(3) Keep FLD'ing until raster line $FE..RL:49:15
+  bne loopy//(2+)..has been reached RL:49:17+
 
   // Below this line it is not important to be cycle exact
   // (cycles are provided only for reference)
 
   lda $ff
-  cmp #$ff // Going downward?
+  cmp #$ff   // Going downward?
   bne upward // No? Then we are currently going upward
 downward:
-  inc $FE          //(5)
-  lda $D012        //(4)
-  cmp #240         //(2)
-  bne exiting_irq1//(2+)
+  inc $FE
+  lda $D012
+  cmp #240
+  bne exiting_irq1
   lda #0
   sta $FF
   jmp exiting_irq1
 upward:
-  dec $FE          //(5)
-  lda $D012        //(4)
-  cmp #50         //(2) Stop at this raster line (RL:51:28)
-  bne exiting_irq1//(2+)
+  dec $FE
+  lda $D012
+  cmp #50
+  bne exiting_irq1
   lda #$FF
   sta $FF
 
