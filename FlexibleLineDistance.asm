@@ -10,16 +10,18 @@
 // Note: the '-2' is required because stabilize_irq() takes 2 raster
 // lines to synchronize the raster. More precisely, it _always_ ends
 // after completing the 3rd cycle of raster line number RASTER_LINE.
-.const RASTER_LINE = 49-2
+.const RASTER_LINE = 48-2
 
 :BasicUpstart2(main)
 main:
   sei
-    lda #BLACK
+    lda #WHITE
     sta border
 
-    lda #50  // Initial raster line to start FLD-ing
+    lda #50  // Initial raster line to start FLD'ing
     sta $FE
+    lda #$FF // Go downward (0 means go upward)
+    sta $FF
 
     lda $01
     and #%11111101
@@ -66,15 +68,27 @@ loopy:
   cpx $FE   //(3) Keep FLD'ing until raster line $FE..RL:50:15
   bne loopy//(2+)..has been reached RL:50:17+
 
-  // Below this line it is not importnat to be cycle exact
+  // Below this line it is not important to be cycle exact
   // (cycles are provided only for reference)
 
-  inc $FE          //(5) (RL:51:22)
-  lda $D012        //(4) (RL:51:26)
-  cmp #241         //(2) Stop at this raster line (RL:51:28)
-  bne exiting_irq1//(2+) (RL:51:30+)
-  lda #50          //(2) (RL:51:32)
-  sta $FE          //(3) (RL:51:35)
+  lda $ff
+  cmp #$ff // Going downward?
+  bne upward // No? Then we are currently going upward
+downward:
+  inc $FE          //(5)
+  lda $D012        //(4)
+  cmp #240         //(2)
+  bne exiting_irq1//(2+)
+  lda #0
+  sta $FF
+  jmp exiting_irq1
+upward:
+  dec $FE          //(5)
+  lda $D012        //(4)
+  cmp #50         //(2) Stop at this raster line (RL:51:28)
+  bne exiting_irq1//(2+)
+  lda #$FF
+  sta $FF
 
 exiting_irq1:
   asl vic2_interrupt_status_register
