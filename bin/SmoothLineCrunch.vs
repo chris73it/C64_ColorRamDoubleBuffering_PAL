@@ -1,0 +1,17 @@
+al C:d019 .vic2_interrupt_status_register
+al C:8d4 .crunchloop
+al C:fd .initial_yscroll
+al C:d011 .vic2_screen_control_register1
+al C:885 .irqa
+al C:d016 .vic2_screen_control_register2
+al C:8ba .irqb
+al C:8fb .nmi
+al C:fc .char_lines_to_crunch
+al C:d012 .vic2_rasterline_register
+al C:848 .Bwd
+al C:8fc .init_screen
+al C:8ca .Fwd
+al C:fb .sin_index
+al C:852 .mainloop
+al C:d01a .vic2_interrupt_control_register
+al C:a00 .sintbl

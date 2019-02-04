@@ -1,0 +1,13 @@
+parsing
+flex pass 1
+flex pass 2
+Output pass
+Writing prg file: C:\C64\Tools\KickAssembler\Mini_Projects\C64_Line_Doubling_PAL-master\bin\SmoothLineCrunch_Compiled.prg
+
+Memory Map
+----------
+Default-segment:
+  $0801-$0aff Unnamed
+
+Writing Vice symbol file: C:\C64\Tools\KickAssembler\Mini_Projects\C64_Line_Doubling_PAL-master\bin\SmoothLineCrunch.vs
+Writing Symbol file: bin\SmoothLineCrunch.sym

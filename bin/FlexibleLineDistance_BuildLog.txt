@@ -9,7 +9,7 @@ Memory Map
 ----------
 Default-segment:
   $0801-$080c Basic
-  $080e-$08e2 Basic End
+  $080e-$08fc Basic End
   $2000-$2088 Default
 
 Writing Vice symbol file: C:\C64\Tools\KickAssembler\Mini_Projects\C64_Line_Doubling_PAL-master\bin\FlexibleLineDistance.vs

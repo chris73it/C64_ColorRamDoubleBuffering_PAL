@@ -1,30 +1,27 @@
 .label vic2_interrupt_status_register=$d019
-.label downward=$8c5
 .label cia1_interrupt_control_register=$dc0d
-.label exiting_irq1=$8e2
 .label vic2_screen_control_register1=$d011
 .label vic2_screen_control_register2=$d016
 .label wait_6_good_lines=$203c
 .label main=$80e
 .label wait_8_rows_with_20_cycles_bad_lines=$2076
 .label wait_1_row_with_20_cycles_bad_line=$204f
-.label loop=$850
 .label wait_one_bad_line_minus_3=$2007 {
 }
-.label upward=$8d5
+.label NumCrunchLines=$877
 .label border=$d020
+.label CalcNumLines=$867
 .label wait_2_rows_with_20_cycles_bad_lines=$2059
+.label loop2=$846
 .label wait_one_good_line_minus_jsr_and_rts=$2027 {
 }
+.label loop1=$819
 .label vic2_rasterline_register=$d012
 .label cia2_interrupt_control_register=$dd0d
-.label loopy=$89a {
-}
 .label wait_one_bad_line=$2000 {
 }
 .label wait_4_rows_with_20_cycles_bad_lines=$2066
 .label background=$d021
-.label irq1=$853
 .label vic2_interrupt_control_register=$d01a
 .label wait_one_good_line=$200c {
 }

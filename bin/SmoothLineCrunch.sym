@@ -1,0 +1,18 @@
+.label vic2_interrupt_status_register=$d019
+.label crunchloop=$8d4
+.label initial_yscroll=$fd
+.label vic2_screen_control_register1=$d011
+.label irqa=$885
+.label vic2_screen_control_register2=$d016
+.label irqb=$8ba
+.label nmi=$8fb
+.label char_lines_to_crunch=$fc
+.label Bwd=$848
+.label Fwd=$8ca
+.label mainloop=$852
+.label sintbl=$a00
+.label vic2_rasterline_register=$d012
+.label init_screen=$8fc {
+}
+.label sin_index=$fb
+.label vic2_interrupt_control_register=$d01a

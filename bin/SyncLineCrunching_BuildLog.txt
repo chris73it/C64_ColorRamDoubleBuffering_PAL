@@ -1,0 +1,16 @@
+parsing
+flex pass 1
+flex pass 2
+flex pass 3
+Output pass
+Writing prg file: C:\C64\Tools\KickAssembler\Mini_Projects\C64_Line_Doubling_PAL-master\bin\SyncLineCrunching_Compiled.prg
+
+Memory Map
+----------
+Default-segment:
+  $0801-$080c Basic
+  $080e-$098d Basic End
+  $2000-$2088 Default
+
+Writing Vice symbol file: C:\C64\Tools\KickAssembler\Mini_Projects\C64_Line_Doubling_PAL-master\bin\SyncLineCrunching.vs
+Writing Symbol file: bin\SyncLineCrunching.sym
